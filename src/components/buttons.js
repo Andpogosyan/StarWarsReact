@@ -1,18 +1,19 @@
 import React from 'react';
 
 
-const Buttons = (props) => {
-        
-// console.log('ghbdtn',props.next);
-    if(props.results.length==0){ return (
-     <button className='startButton' onClick={props.getChar}><img src='/images/button__logo.jpg'></img></button>
- )} else{
-     return <div className='navButtons'>
-         <button className='previousPage' onClick={props.getBack}>previous</button>
-         <button className='nextPage'onClick={props.getChar} >next</button>
-     </div>
- }
-     
+const Buttons = ({ results, previous, getChar, next}) => {
+
+    if (results && results.length === 0) {
+        return (
+            <button className='startButton' onClick={() => getChar(next)}><img alt="start_logo"src='/images/button__logo.jpg'></img></button>
+        )
+    } else {
+        return <div className='navButtons'>
+            <button className='previousPage' onClick={() => getChar(previous)}>previous</button>
+            <button className='nextPage' onClick={() => getChar(next)} >next</button>
+        </div>
+    }
+
 }
 
 export default Buttons;

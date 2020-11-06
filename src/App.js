@@ -1,53 +1,34 @@
-import React, {useState, useEffect}from 'react';
+import React, { useState, useEffect } from 'react';
 import Character from './components/characters';
 import Buttons from './components/buttons';
 import axios from 'axios';
 import './app.css';
-import ModalWindow from './components/modalWindow';
 
 
 
 function App() {
   let [people, setPeople] = useState([]);
 
-  const [nextPage, setNext] = useState('http://swapi.dev/api/people/?page=1');
+  const [nextPage, setNextPage] = useState('http://swapi.dev/api/people/?page=1');
 
-  let [previousPage, setPrevious] = useState([]);
+  let [previousPage, setPrevious] = useState();
 
-  const getCharacters = async () => {
-    
-    if(nextPage){ 
+  const getCharacters = async (url) => {
+  if (url) {
+      const response = await axios(url);
 
-    const response = await axios(nextPage);
-    
-    const { data: { next, previous, results } } = response
-    setPeople(results);
-    setNext(next);
-    setPrevious(previous);
-  }
-  }
-
-  const previousCharacters = async () => {
-    
-    if(previousPage){
-      const response = await axios(previousPage);
-      
-     const { data: { next, previous, results } } = response
-     
+      const { data: { next, previous, results } } = response
       setPeople(results);
-      setNext(next);
+      setNextPage(next);
       setPrevious(previous);
     }
-  };
-
+  }
   
-  
-
   return (
     <div className="characters">
-      <Character results={people}/>
-      <Buttons next={nextPage} previous={previousPage} results={people} getChar={getCharacters} getBack={previousCharacters}/>
-      
+      <Character results={people} />
+      <Buttons next={nextPage} previous={previousPage} results={people} getChar={getCharacters} />
+
     </div>
   );
 }
